@@ -2,15 +2,16 @@
 #define OCCNET_NODE_H
 
 #include "rclcpp/rclcpp.hpp"
-#include "hobot_occnet/img_convert_utils.h"
 #include <filesystem>
-#include <fstream>
+#include "hobot_occnet/occnet_infer.h"
 #include "sensor_msgs/msg/image.hpp"
-#include "dnn/hb_dnn.h"
 #include "opencv2/opencv.hpp"
 
 namespace fs = std::filesystem;
 
+/**
+ * @brief Occnet ros process node
+ */
 class OccNetNode : public rclcpp::Node
 {
 public:
@@ -18,21 +19,25 @@ public:
     ~OccNetNode() = default;
 
 private:
-    // ============================================================ callback fun ============================================================
+    // ===================================== callback fun ===============================
     /**
-     * @brief occupancy network infer callback fun
+     * @brief occupancy network online infer callback fun
      * @param stereo_msg stereo images ros message
      */
     void infer_callback(const sensor_msgs::msg::Image::ConstSharedPtr &stereo_msg);
 
-    void infer_test();
-    int prepare_input_tensor(std::vector<hbDNNTensor> &input_tensors, hbDNNHandle_t dnn_handle);
-    int prepare_output_tensor(std::vector<hbDNNTensor> &output_tensors, hbDNNHandle_t dnn_handle);
-    int postprocess(std::vector<hbDNNTensor> &output_tensors, std::string filename);
+    /**
+     * @brief occupancy network offline infer fun
+     */
+    void infer_offline();
 
-    // ============================================================ member variables ========================================================
+    // ===================================== member =====================================
     std::string occ_model_file_path_;
+
+    bool use_local_image_;
     std::string local_image_dir_;
+
+    OccNetInfer occnet_infer_;
 };
 
 #endif

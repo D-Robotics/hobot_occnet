@@ -23,7 +23,7 @@ link_directories(
 )
 
 # add executable
-add_executable(hobot_occnet_node src/main.cpp src/occnet_node.cpp src/img_convert_utils.cpp)
+add_executable(hobot_occnet_node src/main.cpp src/occnet_node.cpp src/occnet_infer.cpp src/img_convert_utils.cpp)
 target_compile_features(hobot_occnet_node PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 target_include_directories(hobot_occnet_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
