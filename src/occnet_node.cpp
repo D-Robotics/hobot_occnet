@@ -41,11 +41,18 @@ void OccNetNode::infer_offline()
             RCLCPP_INFO_STREAM(this->get_logger(), "=> left_img_path: " << left_img_path << " , right_img_path: " << right_img_path);
             cv::Mat left_img_bgr = cv::imread(left_img_path, cv::IMREAD_COLOR);
             cv::Mat right_img_bgr = cv::imread(right_img_path, cv::IMREAD_COLOR);
+            cv::resize(left_img_bgr, left_img_bgr, cv::Size(1280, 640));
+            cv::resize(right_img_bgr, right_img_bgr, cv::Size(1280, 640));
             if (left_img_bgr.empty() || right_img_bgr.empty())
             {
-                RCLCPP_ERROR(this->get_logger(), "=> read imgs fail!");
+                RCLCPP_ERROR(this->get_logger(), "=> failed to read image!");
             }
             occnet_infer_.forward(left_img_bgr, right_img_bgr, InputImgType::BGR8);
+
+            std::string result_path = "./Ocupancy_" + filename + ".txt";
+            RCLCPP_INFO_STREAM(this->get_logger(), "=> save result to: " << result_path);
+            occnet_infer_.save_result_to_txt(result_path);
+            RCLCPP_INFO(this->get_logger(), "=> save finished!");
         }
     }
 }

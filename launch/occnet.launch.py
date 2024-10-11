@@ -41,7 +41,7 @@ def generate_launch_description():
     occ_model_file_path = os.path.join(
         get_package_share_directory("hobot_occnet"),
         "config",
-        "drobotics_occ_network_v0_0_2.bin",
+        "drobotics_occ_network_v0_0_3.bin",
     )
 
     local_image_dir = os.path.join(

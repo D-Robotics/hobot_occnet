@@ -1,6 +1,7 @@
 #ifndef OCCNET_INFER_H
 #define OCCNET_INFER_H
 
+#include <fstream> 
 #include "rclcpp/rclcpp.hpp"
 #include "dnn/hb_dnn.h"
 #include "opencv2/opencv.hpp"
@@ -75,7 +76,7 @@ private:
     int prepare_output_tensor();
 
     /**
-     * @brief
+     * @brief fill data to input tensor
      */
     int fill_bgr_to_tensor_nv12(const cv::Mat &left_img_bgr, const cv::Mat &right_img_bgr);
 
@@ -83,6 +84,8 @@ private:
      * @brief postprocess
      */
     int postprocess();
+
+    std::string tensor_type_to_str(int32_t tensor_type);
 
     // ===================================== member =====================================
     /** init */
@@ -99,6 +102,7 @@ private:
     std::vector<hbDNNTensor> output_tensors_;
     int model_input_h_;
     int model_input_w_;
+    int32_t input_tensor_type_;
 
     /** result */
     std::vector<OccGrid> occ_grids_;
